@@ -15,7 +15,7 @@ class Love(Cog):
 
     @commands.command(aliases=["lennylove"])
     async def love(
-        self, ctx: commands.Context, lover, loved = none
+        self, ctx: commands.Context, lover, loved=none
     ):
         """Calculate the love percentage!"""
 
