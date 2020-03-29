@@ -1,8 +1,7 @@
-import aiohttp
 import discord
-from bs4 import BeautifulSoup
 from redbot.core import commands
 from typing import Any
+from discord.ext.commands import MemberConverter
 
 Cog: Any = getattr(commands, "Cog", object)
 
@@ -15,48 +14,47 @@ class Love(Cog):
 
     @commands.command(aliases=["lennylove"])
     async def love(
-        self, ctx: commands.Context, lover, loved
+        self, ctx: commands.Context, name1, name2=None
     ):
-        """Calculate the love percentage!"""
-
-        if hasattr(lover, "display_name"):
-            x = lover.display_name
-        else:
-            x = str(lover)
-        if hasattr(loved, "display_name"):
-            y = loved.display_name
-        else:
-            y = str(loved)
-            
-        loved = ctx.author
-
-        url = "https://www.lovecalculator.com/love.php?name1={}&name2={}".format(
-            x.replace(" ", "+"), y.replace(" ", "+")
-        )
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                soup_object = BeautifulSoup(await response.text(), "html.parser")
-                try:
-                    description = (
-                        soup_object.find("div", attrs={"class": "result__score"}).get_text().strip()
-                    )
-                except:
-                    description = "Dr. Lenny schläft gerade..."
 
         try:
-            z = description[:2]
-            z = int(z)
-            if z > 50:
-                emoji = "❤"
-            elif z > 35:
-                emoji = ":leninshrug:"
-            else:
-                emoji = "💔"
-            title = "Dr. Lenny meint, die Liebe zwischen {} und {} beträgt:".format(x, y)
+            converter = MemberConverter()
+            name1 = await converter.convert(ctx, name1)
+            name1 = name1.display_name
         except:
-            emoji = ""
-            title = "Dr. Lenny hat dir eine Nachricht geschickt."
+            pass
 
-        description = emoji + " " + description + " " + emoji
+        if not name2:
+            name2 = name1
+            name1 = ctx.author.display_name
+        else:
+            try:
+                converter = MemberConverter()
+                name2 = await converter.convert(ctx, name2)
+                name2 = name2.display_name
+            except:
+                pass
+
+        if name1.lower() == "lenny" or name2.lower() == "lenny":
+            lenny = True
+        else:
+            lenny = False
+
+        num1 = sum([ord(x) for x in name1.lower()])
+        num2 = sum([ord(x) for x in name2.lower()])
+        z = (num1 + num2) % 100 + 1
+        if lenny:
+            z += (100-z)//2
+        if z > 70:
+            emoji = "❤"
+            if lenny:
+                emoji = "😻"
+        elif z < 30:
+            emoji = "💔"
+        else:
+            emoji = ""
+        title = "Dr. Lenny meint, die Liebe zwischen {} und {} beträgt:".format(name1, name2)
+
+        description = emoji + " " + str(z) + "% " + emoji
         em = discord.Embed(title=title, description=description, color=discord.Color.red())
         await ctx.send(embed=em)
