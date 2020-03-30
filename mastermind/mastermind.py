@@ -33,9 +33,9 @@ class Mastermind(Cog):
             for line in board.lines:
                 line.fill(player.play())
                 line.eval(board.solution)
-                await ctx.send('Ist es {}? :marxthink:'.format(''.join(line.pegs)))
+                await ctx.send('Ist es {}? <:marxthink:692250502473187368>'.format(''.join(line.pegs)))
                 if line.k == 4:
-                    await ctx.send('GEWONNEN :PogU:')
+                    await ctx.send('GEWONNEN <:PogU:694323950448279623>')
                     return
                 await ctx.send('🔸 {}   🔹 {}'.format(line.w, line.k))
                 player.elim(line)
@@ -52,8 +52,8 @@ class Mastermind(Cog):
                 line.fill(guess.content)
                 line.eval(board.solution)
                 if line.k == 4:
-                    await ctx.send('GEWONNEN :PogU:')
+                    await ctx.send('GEWONNEN <:PogU:694323950448279623>')
                     return
                 await ctx.send('🔸 {}   🔹 {}'.format(line.w, line.k))
 
-        await ctx.send('VERLOREN :PepeHands:')
+        await ctx.send('VERLOREN <:PepeHands:692256403381026817>')
