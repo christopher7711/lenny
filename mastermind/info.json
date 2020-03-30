@@ -1,0 +1,19 @@
+{
+  "author": [
+    "Matau"
+  ],
+  "bot_version": [
+    1,
+    0,
+    0
+  ],
+  "description": "Play the game Mastermind against a bot or a another player",
+  "hidden": false,
+  "install_msg": "Get started with `[p]load mastermind`, then `[p]help mastermind`",
+  "requirements": [],
+  "short": "Play Mastermind",
+  "tags": [
+    "fun",
+    "love"
+  ]
+}
