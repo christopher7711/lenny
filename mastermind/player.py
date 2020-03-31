@@ -1,6 +1,7 @@
 from itertools import product
 from random import choice
 from .game import evaluate
+import asyncio
 
 class Player():
 
@@ -11,7 +12,7 @@ class Player():
         self.checklist = list(product(colors, repeat=4))
         self.unused = self.checklist.copy()
 
-    def play(self, code=None):
+    async def play(self, code=None):
         if code:
             self.unused.remove(code)
             return code
