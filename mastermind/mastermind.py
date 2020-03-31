@@ -22,9 +22,9 @@ class Mastermind(Cog):
             'PogU' : '<:PogU:694323950448279623>',
             'marxthink' : '<:marxthink:692250502473187368>',
             'PepeHands' : '<:PepeHands:692256403381026817>',
-            'mlthink' : 'code',
-            'communism_thonk' : 'code',
-            'chelaugh' : 'code'}
+            'mlthink' : '<:mlthink:692277087003869188>',
+            'communism_thonk' : '<:communism_thonk:692264388865949737>',
+            'chelaugh' : '<:chelaugh:692250704680583169>'}
         
         correct = {
             'richtig',
