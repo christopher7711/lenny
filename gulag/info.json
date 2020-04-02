@@ -1,0 +1,21 @@
+{
+  "author": [
+    "Matau"
+  ],
+  "bot_version": [
+    1,
+    0,
+    0
+  ],
+  "description": "Put a user into gulag for a limited time",
+  "hidden": false,
+  "install_msg": "Get started with `[p]load gulag`, then `[p]help gulag`",
+  "requirements": [],
+  "short": "Put user into gulag",
+  "tags": [
+    "fun",
+    "ussr",
+    "stalin",
+    "moderation"
+  ]
+}
