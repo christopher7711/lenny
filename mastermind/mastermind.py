@@ -19,12 +19,12 @@ class Mastermind(Cog):
     async def mastermind(self, ctx: commands.Context, mode='guess', *args):
 
         emoji = {
-            'PogU' : '<:PogU:694323950448279623>',
-            'marxthink' : '<:marxthink:692250502473187368>',
-            'PepeHands' : '<:PepeHands:692256403381026817>',
-            'mlthink' : '<:mlthink:692277087003869188>',
-            'communism_thonk' : '<:communism_thonk:692264388865949737>',
-            'chelaugh' : '<:chelaugh:692250704680583169>'}
+            'PogU'              : '<:PogU:694323950448279623>',
+            'marxthink'         : '<:marxthink:692250502473187368>',
+            'PepeHands'         : '<:PepeHands:692256403381026817>',
+            'mlthink'           : '<:mlthink:692277087003869188>',
+            'communism_thonk'   : '<:communism_thonk:692264388865949737>',
+            'chelaugh'          : '<:chelaugh:692250704680583169>'}
         
         correct = {
             'richtig',
@@ -113,7 +113,7 @@ class Mastermind(Cog):
                 await ctx.send('🔸 {}   🔹 {}'.format(line.w, line.k))
                 player.elim(line)
 
-        if mode == 'lenny':
+        elif mode == 'lenny':
             player = Player(colors)
             line = Line()
             while True:
@@ -138,7 +138,7 @@ class Mastermind(Cog):
                 line.assist(*tip)
                 player.elim(line)
 
-        if mode == 'guess':
+        elif mode == 'guess':
             board = Board(colors=colors)
             if not hide:
                 await ctx.send('Die Lösung ist ||{}||'.format(
@@ -157,3 +157,6 @@ class Mastermind(Cog):
                     return
                 await ctx.send('🔸 {}   🔹 {}'.format(line.w, line.k))
             await ctx.send('VERLOREN {}'.format(emoji['PepeHands']))
+
+        else:
+            return
