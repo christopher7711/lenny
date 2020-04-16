@@ -2,6 +2,7 @@ import discord
 from redbot.core import commands
 from typing import Any
 import os, random
+from redbot.core.data_manager import cog_data_path
 from redbot.core import Config,checks
 
 Cog: Any = getattr(commands, "Cog", object)
