@@ -33,9 +33,19 @@ class Kawaii(Cog):
                 pic = discord.File(file)
                 await ctx.send(file=pic)
             except:
-                await ctx.send("Error couldnt get file check path [p]setkawaiipath")
+                path = str(cog_data_path(raw_name="Kawaii"))
+                weeb = path + "anime_communism"
+                file = random.choice(os.listdir(weeb))
+                file = weeb + file
+                pic = discord.File(file)
+                await ctx.send(file=pic)
         else:
-            await ctx.send("Path not set set it with [p]setkawaiipath")
+            path = str(cog_data_path(raw_name="Kawaii"))
+            weeb = path + "anime_communism"
+            file = random.choice(os.listdir(weeb))
+            file = weeb + file
+            pic = discord.File(file)
+            await ctx.send(file=pic)
             
     @commands.command()
     @checks.is_owner()
