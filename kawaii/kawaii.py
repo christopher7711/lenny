@@ -24,7 +24,6 @@ class Kawaii(Cog):
     @commands.command(aliases=["kawaiiii"])
     async def kawaii(self, ctx: commands.Context):
         path = await self.config.get_raw("kawaiipath")
-        ctx.send(path)
         if path != None:
             try:
                 await ctx.trigger_typing()
