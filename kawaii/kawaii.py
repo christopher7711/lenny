@@ -23,8 +23,8 @@ class Kawaii(Cog):
 
     @commands.command(aliases=["kawaiiii"])
     async def kawaii(self, ctx: commands.Context):
-        config = Config.get_conf(self, identifier=934735897643)
-        path = await config.guild(ctx.guild).kawaiipath()
+        path = await self.config.get_raw("kawaiipath")
+        ctx.send(path)
         if path != None:
             try:
                 await ctx.trigger_typing()
@@ -40,6 +40,5 @@ class Kawaii(Cog):
     @commands.command()
     @checks.is_owner()
     async def setkawaiipath(self, ctx, new_value):
-        config = Config.get_conf(self, identifier=934735897643)
-        await config.guild(ctx.guild).kawaiipath.set(new_value)
+        await self.config.set_raw("kawaiipath",value = new_value)
         await ctx.send("Path has been set")
