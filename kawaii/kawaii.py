@@ -17,7 +17,8 @@ class Kawaii(Cog):
             "kawaiipath": None
         }
         default_guild = {
-            "kawaiipath": None
+            "kawaiipath": None,
+            "kawaiilist": []
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
@@ -25,26 +26,48 @@ class Kawaii(Cog):
     @commands.command(aliases=["kawaiiii"])
     async def kawaii(self, ctx: commands.Context):
         path = await self.config.get_raw("kawaiipath")
+        list = await self.config.get_raw("kawaiilist")
+        leng = len(list)
+        if leng == 0:
+            path = await self.config.get_raw("kawaiipath")
+            if path != None:
+                filelist = os.listdir(path)
+                random.shuffle(filelist)
+                await self.config.set_raw("kawaiilist",value = filelist)
+                list = await self.config.get_raw("kawaiilist")
+            else:
+                path = str(cog_data_path(raw_name="Kawaii")) + "/anime_communism/"
+                filelist = os.listdir(path)
+                random.shuffle(filelist)
+                await self.config.set_raw("kawaiilist",value = filelist)
+                list = await self.config.get_raw("kawaiilist")
+        leng = len(list)
         if path != None:
             try:
                 await ctx.trigger_typing()
-                file = random.choice(os.listdir(path))
+                file = list[leng - 1]
                 file = path + file
                 pic = discord.File(file)
+                list.pop()
+                await self.config.set_raw("kawaiilist",value = list)
                 await ctx.send(file=pic)
             except:
                 path = str(cog_data_path(raw_name="Kawaii"))
                 weeb = path + "/anime_communism/"
-                file = random.choice(os.listdir(weeb))
+                file = list[leng - 1]
                 file = weeb + file
                 pic = discord.File(file)
+                list.pop()
+                await self.config.set_raw("kawaiilist",value = list)
                 await ctx.send(file=pic)
         else:
             path = str(cog_data_path(raw_name="Kawaii"))
             weeb = path + "/anime_communism/"
-            file = random.choice(os.listdir(weeb))
+            file = list[leng - 1]
             file = weeb + file
             pic = discord.File(file)
+            list.pop()
+            await self.config.set_raw("kawaiilist",value = list)
             await ctx.send(file=pic)
             
     @commands.command()
@@ -52,3 +75,26 @@ class Kawaii(Cog):
     async def setkawaiipath(self, ctx, new_value):
         await self.config.set_raw("kawaiipath",value = new_value)
         await ctx.send("Path has been set")
+
+    @commands.command()
+    @checks.is_owner()
+    async def updatekawaii(self, ctx):
+        path = await self.config.get_raw("kawaiipath")
+        if path != None:
+            filelist = os.listdir(path)
+            random.shuffle(filelist)
+            await self.config.set_raw("kawaiilist",value = filelist)
+        else:
+            path = str(cog_data_path(raw_name="Kawaii")) + "/anime_communism/"
+            filelist = os.listdir(path)
+            random.shuffle(filelist)
+            await self.config.set_raw("kawaiilist",value = filelist)
+        await ctx.send("File list updated")
+
+    @commands.command()
+    @checks.is_owner()
+    async def showkawaii(self, ctx):
+        list = await self.config.get_raw("kawaiilist")
+        for i in list:
+            await ctx.send(content = i)
+        
