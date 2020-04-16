@@ -9,7 +9,7 @@
   ],
   "description": "Send random file of specified path",
   "hidden": false,
-  "install_msg": "Get started with `[p]load love`, then `[p]help love`",
+  "install_msg": "Get started with `[p]load kawaii`, then `[p]help kawaii`",
   "requirements": [],
   "short": "Send random file",
   "tags": [
