@@ -14,10 +14,10 @@ class Kawaii(Cog):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=934735897643)
         default_global = {
-            "kawaiipath": None
+            "kawaiipath": "None"
         }
         default_guild = {
-            "kawaiipath": None
+            "kawaiipath": "None"
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
@@ -25,7 +25,7 @@ class Kawaii(Cog):
     @commands.command(aliases=["kawaiiii"])
     async def kawaii(self, ctx: commands.Context):
         path = await self.config.guild(ctx.guild).kawaiipath()
-        if path != None:
+        if path != "None":
             try:
                 await ctx.trigger_typing()
                 file = random.choice(os.listdir(path))
