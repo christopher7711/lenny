@@ -34,14 +34,14 @@ class Kawaii(Cog):
                 await ctx.send(file=pic)
             except:
                 path = str(cog_data_path(raw_name="Kawaii"))
-                weeb = path + "anime_communism"
+                weeb = path + "/anime_communism"
                 file = random.choice(os.listdir(weeb))
                 file = weeb + file
                 pic = discord.File(file)
                 await ctx.send(file=pic)
         else:
             path = str(cog_data_path(raw_name="Kawaii"))
-            weeb = path + "anime_communism"
+            weeb = path + "/anime_communism"
             file = random.choice(os.listdir(weeb))
             file = weeb + file
             pic = discord.File(file)
