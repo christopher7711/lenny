@@ -26,10 +26,10 @@ class Kawaii(Cog):
     @commands.command(aliases=["kawaiiii"])
     async def kawaii(self, ctx: commands.Context):
         path = await self.config.get_raw("kawaiipath")
-        klst = await self.config.get_raw("kawaiilist")
+        klst = await self.config.guild(ctx.guild).kawaiilist()
 
         if path is None:
-            path = os.path.join(cog_data_path(raw_name="kawaii"), "anime_communism")
+            path = os.path.join(cog_data_path(raw_name="Kawaii"), "anime_communism")
         
         if not klst:
             filelist = os.listdir(path)
