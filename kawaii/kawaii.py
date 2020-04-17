@@ -27,9 +27,10 @@ class Kawaii(Cog):
     async def kawaii(self, ctx: commands.Context):
         path = await self.config.get_raw("kawaiipath")
         klst = await self.config.guild(ctx.guild).kawaiilist()
+        print(klst)
 
         if path is None:
-            path = os.path.join(cog_data_path(raw_name="Kawaii"), "anime_communism")
+            path = os.path.join(cog_data_path(raw_name="Kawaii"), "anime_communism", '')
         
         if not klst:
             filelist = os.listdir(path)
@@ -42,6 +43,7 @@ class Kawaii(Cog):
         pic = discord.File(file)
         await self.config.set_raw("kawaiilist", value=klst)
         await ctx.send(file=pic)
+        print(klst[:10], ' and so on and so on')
             
     @commands.command()
     @checks.is_owner()
@@ -54,7 +56,7 @@ class Kawaii(Cog):
     async def updatekawaii(self, ctx):
         path = await self.config.get_raw("kawaiipath")
         if path is None:
-            path = os.path.join(cog_data_path(raw_name="kawaii"), "anime_communism")
+            path = os.path.join(cog_data_path(raw_name="kawaii"), "anime_communism", '')
         filelist = os.listdir(path)
         random.shuffle(filelist)
         await self.config.set_raw("kawaiilist", value=filelist)
