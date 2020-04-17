@@ -25,7 +25,6 @@ class Kawaii(Cog):
 
     @commands.command(aliases=["kawaiiii"])
     async def kawaii(self, ctx: commands.Context):
-        await ctx.send(ctx.guild.id)
         path = await self.config.guild(ctx.guild).kawaiipath()
         klst = await self.config.guild(ctx.guild).kawaiilist()
 
