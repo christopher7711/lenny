@@ -35,13 +35,16 @@ class Kawaii(Cog):
         if not klst:
             filelist = os.listdir(path)
             random.shuffle(filelist)
-            await self.config.set_raw("kawaiilist", value=filelist)
-            klst = await self.config.get_raw("kawaiilist")
+           #await self.config.set_raw("kawaiilist", value=filelist)
+            await self.config.guild(ctx.guild).kawaiilist.set(filelist)
+            #klst = await self.config.get_raw("kawaiilist")
+            klst = await self.config.guild(ctx.guild).kawaiilist()
 
         await ctx.trigger_typing()
         file = path + klst.pop()
         pic = discord.File(file)
-        await self.config.set_raw("kawaiilist", value=klst)
+        #await self.config.set_raw("kawaiilist", value=klst)
+        await self.config.guild(ctx.guild).kawaiilist.set(klst)
         await ctx.send(file=pic)
         print(klst[:10], ' and so on and so on')
             
@@ -59,7 +62,8 @@ class Kawaii(Cog):
             path = os.path.join(cog_data_path(raw_name="kawaii"), "anime_communism", '')
         filelist = os.listdir(path)
         random.shuffle(filelist)
-        await self.config.set_raw("kawaiilist", value=filelist)
+        #await self.config.set_raw("kawaiilist", value=filelist)
+        await self.config.guild(ctx.guild).kawaiilist.set(filelist)
         await ctx.send("File list updated")
 
     @commands.command()
