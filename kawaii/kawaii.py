@@ -3,7 +3,7 @@ from redbot.core import commands
 from typing import Any
 import os, random
 from redbot.core.data_manager import cog_data_path
-from redbot.core import Config,checks
+from redbot.core import Config, checks
 
 Cog: Any = getattr(commands, "Cog", object)
 
@@ -25,76 +25,45 @@ class Kawaii(Cog):
 
     @commands.command(aliases=["kawaiiii"])
     async def kawaii(self, ctx: commands.Context):
-        path = await self.config.get_raw("kawaiipath")
-        list = await self.config.get_raw("kawaiilist")
-        leng = len(list)
-        if leng == 0:
-            path = await self.config.get_raw("kawaiipath")
-            if path != None:
-                filelist = os.listdir(path)
-                random.shuffle(filelist)
-                await self.config.set_raw("kawaiilist",value = filelist)
-                list = await self.config.get_raw("kawaiilist")
-            else:
-                path = str(cog_data_path(raw_name="Kawaii")) + "/anime_communism/"
-                filelist = os.listdir(path)
-                random.shuffle(filelist)
-                await self.config.set_raw("kawaiilist",value = filelist)
-                list = await self.config.get_raw("kawaiilist")
-        leng = len(list)
-        if path != None:
-            try:
-                await ctx.trigger_typing()
-                file = list[leng - 1]
-                file = path + file
-                pic = discord.File(file)
-                list.pop()
-                await self.config.set_raw("kawaiilist",value = list)
-                await ctx.send(file=pic)
-            except:
-                path = str(cog_data_path(raw_name="Kawaii"))
-                weeb = path + "/anime_communism/"
-                file = list[leng - 1]
-                file = weeb + file
-                pic = discord.File(file)
-                list.pop()
-                await self.config.set_raw("kawaiilist",value = list)
-                await ctx.send(file=pic)
-        else:
-            path = str(cog_data_path(raw_name="Kawaii"))
-            weeb = path + "/anime_communism/"
-            file = list[leng - 1]
-            file = weeb + file
-            pic = discord.File(file)
-            list.pop()
-            await self.config.set_raw("kawaiilist",value = list)
-            await ctx.send(file=pic)
+        path = await self.config.guild(ctx.guild).kawaiipath()
+        klst = await self.config.guild(ctx.guild).kawaiilist()
+
+        if path is None:
+            path = os.path.join(cog_data_path(raw_name="Kawaii"), "anime_communism", '')
+        
+        if not klst:
+            filelist = os.listdir(path)
+            random.shuffle(filelist)
+            await self.config.guild(ctx.guild).kawaiilist.set(filelist)
+            klst = await self.config.guild(ctx.guild).kawaiilist()
+
+        await ctx.trigger_typing()
+        file = path + klst.pop()
+        pic = discord.File(file)
+        await self.config.guild(ctx.guild).kawaiilist.set(klst)
+        await ctx.send(file=pic)
             
     @commands.command()
     @checks.is_owner()
     async def setkawaiipath(self, ctx, new_value):
-        await self.config.set_raw("kawaiipath",value = new_value)
+        await self.config.guild(ctx.guild).kawaiipath.set(new_value)
         await ctx.send("Path has been set")
 
     @commands.command()
     @checks.is_owner()
     async def updatekawaii(self, ctx):
-        path = await self.config.get_raw("kawaiipath")
-        if path != None:
-            filelist = os.listdir(path)
-            random.shuffle(filelist)
-            await self.config.set_raw("kawaiilist",value = filelist)
-        else:
-            path = str(cog_data_path(raw_name="Kawaii")) + "/anime_communism/"
-            filelist = os.listdir(path)
-            random.shuffle(filelist)
-            await self.config.set_raw("kawaiilist",value = filelist)
+        path = await self.config.guild(ctx.guild).kawaiipath()
+        if path is None:
+            path = os.path.join(cog_data_path(raw_name="kawaii"), "anime_communism", '')
+        filelist = os.listdir(path)
+        random.shuffle(filelist)
+        await self.config.guild(ctx.guild).kawaiilist.set(filelist)
         await ctx.send("File list updated")
 
     @commands.command()
     @checks.is_owner()
     async def showkawaii(self, ctx):
-        list = await self.config.get_raw("kawaiilist")
-        for i in list:
-            await ctx.send(content = i)
+        klst = await self.config.guild(ctx.guild).kawaiilist()
+        for file in klst:
+            await ctx.send(content=file)
         
