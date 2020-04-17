@@ -54,7 +54,7 @@ class Kawaii(Cog):
     async def updatekawaii(self, ctx):
         path = await self.config.guild(ctx.guild).kawaiipath()
         if path is None:
-            path = os.path.join(cog_data_path(raw_name="kawaii"), "anime_communism", '')
+            path = os.path.join(cog_data_path(raw_name="Kawaii"), "anime_communism", '')
         filelist = os.listdir(path)
         random.shuffle(filelist)
         await self.config.guild(ctx.guild).kawaiilist.set(filelist)
