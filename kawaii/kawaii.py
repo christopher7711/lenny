@@ -25,9 +25,8 @@ class Kawaii(Cog):
 
     @commands.command(aliases=["kawaiiii"])
     async def kawaii(self, ctx: commands.Context):
-        path = await self.config.get_raw("kawaiipath")
+        path = await self.config.guild(ctx.guild).kawaiipath()
         klst = await self.config.guild(ctx.guild).kawaiilist()
-        print(klst)
 
         if path is None:
             path = os.path.join(cog_data_path(raw_name="Kawaii"), "anime_communism", '')
@@ -35,41 +34,36 @@ class Kawaii(Cog):
         if not klst:
             filelist = os.listdir(path)
             random.shuffle(filelist)
-           #await self.config.set_raw("kawaiilist", value=filelist)
             await self.config.guild(ctx.guild).kawaiilist.set(filelist)
-            #klst = await self.config.get_raw("kawaiilist")
             klst = await self.config.guild(ctx.guild).kawaiilist()
 
         await ctx.trigger_typing()
         file = path + klst.pop()
         pic = discord.File(file)
-        #await self.config.set_raw("kawaiilist", value=klst)
         await self.config.guild(ctx.guild).kawaiilist.set(klst)
         await ctx.send(file=pic)
-        print(klst[:10], ' and so on and so on')
             
     @commands.command()
     @checks.is_owner()
     async def setkawaiipath(self, ctx, new_value):
-        await self.config.set_raw("kawaiipath", value=new_value)
+        await self.config.guild(ctx.guild).kawaiipath.set(new_value)
         await ctx.send("Path has been set")
 
     @commands.command()
     @checks.is_owner()
     async def updatekawaii(self, ctx):
-        path = await self.config.get_raw("kawaiipath")
+        path = await self.config.guild(ctx.guild).kawaiipath()
         if path is None:
             path = os.path.join(cog_data_path(raw_name="kawaii"), "anime_communism", '')
         filelist = os.listdir(path)
         random.shuffle(filelist)
-        #await self.config.set_raw("kawaiilist", value=filelist)
         await self.config.guild(ctx.guild).kawaiilist.set(filelist)
         await ctx.send("File list updated")
 
     @commands.command()
     @checks.is_owner()
     async def showkawaii(self, ctx):
-        klst = await self.config.get_raw("kawaiilist")
+        klst = await self.config.guild(ctx.guild).kawaiilist()
         for file in klst:
             await ctx.send(content=file)
         
