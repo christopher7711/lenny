@@ -15,12 +15,18 @@ class Speakerlist(Cog):
         self.bot = bot
         self.msg = None
         self.lst = list()
+        # TODO: Add config so that only one list per channel exists
+        # which is reposted if !speakerlist is called again
 
     @commands.command(aliases=['redeliste', 'rednerliste', 'rednerinnenliste'])
     async def speakerlist(self, ctx: commands.Context):
-        self.msg = await ctx.send('Bitte Warten...')
-        await self.msg.pin()
-        await self._refresh()
+        if True:
+            self.msg = await ctx.send('Bitte Warten...')
+            await self.msg.pin()
+            await self._refresh()
+        else:
+            # TODO: Repost list and delete old one if exists
+            pass
 
     async def _refresh(self):
         say = await self._make_list()
@@ -30,13 +36,28 @@ class Speakerlist(Cog):
             await self.msg.add_reaction(emoji)
 
     async def _make_list(self):
-        msg = '**RednerInnenliste:**\n'
-        filler = 3 - len(self.lst)
+        msg = ''
         names = [user.mention for user in self.lst]
-        names.extend(['(leer)']*filler)
+        if not names:
+            names = ['niemand']
         for i, name in enumerate(names):
-            msg += f'    **{str(i+1)}.** ' + name + '\n'
+            if i == 0:
+                msg += '**RednerIn: **' + name + '\n'
+                if len(names) < 2:
+                    break
+                else: msg += 'In Vorbereitung: '
+            if i > 1:
+                msg += ' '*31
+            msg += name + '\n'
         return msg
+    
+    @commands.command(aliases=['hochreihen'])
+    async def bump(self, ctx, speaker: discord.member, by: int=1):
+        if speaker in self.lst:
+            index = self.lst.index(speaker) - by
+            self.lst.remove(speaker)
+            self.lst.insert(index, speaker)
+        await self._refresh()
     
     @commands.Cog.listener()
     async def on_react(self, reaction, user):
@@ -50,20 +71,14 @@ class Speakerlist(Cog):
         if str(reaction.emoji) == self.emoji[0]:
             if user not in self.lst:
                 self.lst.append(user)
-            else:
-                pass
         
         if str(reaction.emoji) == self.emoji[1]:
-            try:
+            if user in self.lst:
                 self.lst.remove(user)
-            except ValueError:
-                pass
         
         if str(reaction.emoji) == self.emoji[2]:
-            try:
+            if self.lst:
                 self.lst.pop(0)
-            except IndexError:
-                pass
 
         if str(reaction.emoji) == self.emoji[3]:
             await self.msg.delete()
