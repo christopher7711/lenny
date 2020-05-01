@@ -11,9 +11,10 @@ class Teams(Cog):
     # Assign member to random team
 
     teams = [
-        'Team 1',
-        'Team 2',
-        'Team 3']
+        'Team Luxemburg',
+        'Team Maria Caesar',
+        'Team Kollontai',
+        'Team Schütte-Lihotsky']
 
     def __init__(self, bot):
         self.bot = bot
@@ -27,6 +28,6 @@ class Teams(Cog):
         for role in roles:
             if role in ctx.author.roles:
                 return
-        
+
         random_team = random.choice(roles)
         await ctx.author.add_roles(random_team)
