@@ -29,18 +29,7 @@ class AudioTrivia(Trivia):
         self.audioconf = Config.get_conf(
             self, identifier=651171001051118411410511810597, force_registration=True
         )
-        self.conf = Config.get_conf(
-            self, identifier=651171001053118411410311310597, force_registration=True
-        )
-        self.conf.register_guild(
-            max_score=10,
-            timeout=120.0,
-            delay=30.0,
-            bot_plays=False,
-            reveal_answer=True,
-            payout_multiplier=0.0,
-            allow_override=True,
-        )
+
         self.audioconf.register_guild(delay=30.0, repeat=True)
 
     @commands.group()
@@ -164,7 +153,7 @@ class AudioTrivia(Trivia):
                 "The trivia list was parsed successfully, however it appears to be empty!"
             )
             return
-        settings = await self.conf.guild(ctx.guild).all()
+        settings = await self.config.guild(ctx.guild).all()
         audiosettings = await self.audioconf.guild(ctx.guild).all()
         config = trivia_dict.pop("CONFIG", None)
         if config and settings["allow_override"]:
@@ -212,7 +201,7 @@ class AudioTrivia(Trivia):
 
         with path.open(encoding="utf-8") as file:
             try:
-                dict_ = yaml.load(file)
+                dict_ = yaml.load(file, Loader=yaml.SafeLoader)
             except yaml.error.YAMLError as exc:
                 raise InvalidListError("YAML parsing failed.") from exc
             else:
