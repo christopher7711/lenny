@@ -1,0 +1,18 @@
+{
+  "author": [
+    "Matau"
+  ],
+  "bot_version": [
+    0,
+    1,
+    0
+  ],
+  "description": "Generate point based reaction poll",
+  "hidden": false,
+  "install_msg": "Get started with `[p]load reactionpoints`",
+  "requirements": [],
+  "short": "Points for poll",
+  "tags": [
+    "reaction-poll"
+  ]
+}
